@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  batch:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # target: build
+    image: sample-batch:latest
+    command:
+      - /bin/bash
+      - -c
+      - |
+        jupyter nbconvert --to html --output=output.html --log-level=DEBUG --execute src/main.ipynb
+        tail -f /dev/null
