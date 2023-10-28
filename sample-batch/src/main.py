@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 
 
@@ -8,4 +10,5 @@ def run(raise_error: int = 0) -> None:
         raise RuntimeError("Error from main.py by raise_error=True")
 
 if __name__ == "__main__":
-    run()
+    raise_error = int(os.getenv("RAISE_ERROR", "0"))
+    run(raise_error)

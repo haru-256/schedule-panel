@@ -5,11 +5,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      # target: build
-    image: sample-batch:latest
+    image: us-central1-docker.pkg.dev/haru256-schedule-panel/batch/sample-batch:latest
+    environment:
+      - RAISE_ERROR=1
     command:
       - /bin/bash
       - -c
       - |
-        jupyter nbconvert --to html --output=output.html --log-level=DEBUG --execute src/main.ipynb
+        # jupyter nbconvert --to html --output=output.html --log-level=DEBUG --execute src/main.ipynb
+        python src/main.py
         tail -f /dev/null

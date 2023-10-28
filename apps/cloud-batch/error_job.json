@@ -1,0 +1,51 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "displayName": "sample-batch",
+            "container": {
+              "imageUri": "us-central1-docker.pkg.dev/haru256-schedule-panel/batch/sample-batch"
+            },
+            "environment": {
+              "variables": {
+                "RAISE_ERROR": "1"
+              }
+            }
+          }
+        ],
+        "computeResource": {
+          "cpuMilli": 1000,
+          "memoryMib": 1000
+        },
+        "maxRetryCount": 0
+      },
+      "taskCount": 1,
+      "parallelism": 1,
+      "schedulingPolicy": "IN_ORDER"
+    }
+  ],
+  "allocationPolicy": {
+    "location": {
+      "allowedLocations": ["regions/us-central1"]
+    },
+    "instances": [
+      {
+        "policy": { "machineType": "e2-standard-2" }
+      }
+    ],
+    "network": {
+      "networkInterfaces": [
+        {
+          "network": "projects/haru256-schedule-panel/global/networks/batch",
+          "subnetwork": "projects/haru256-schedule-panel/regions/us-central1/subnetworks/batch",
+          "noExternalIpAddress": true
+        }
+      ]
+    }
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}
