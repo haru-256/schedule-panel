@@ -1,22 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MachineType } from '../entities/machineType';
 import { IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateBatchDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  id: string;
+  name: string;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  imageURL: string;
+  imageUrl: string;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  machineType: MachineType;
+  machineType: string;
 
   // TODO: cron syntax validation
   @IsString()

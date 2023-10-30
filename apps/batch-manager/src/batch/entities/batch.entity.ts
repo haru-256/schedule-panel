@@ -1,23 +1,33 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MachineType } from './machineType';
+import { Batch } from '@prisma/client';
 
-export class BatchEntity {
+export class BatchEntity implements Batch {
   @ApiProperty()
   id: string;
 
   @ApiProperty()
-  imageURL: string;
+  name: string;
 
   @ApiProperty()
-  machineType: MachineType;
+  imageUrl: string;
+
+  @ApiProperty()
+  machineType: string;
+
+  @ApiProperty()
+  owner: string;
 
   // TODO: cron syntax validation
   @ApiProperty()
   scheduledAt: string;
 
   @ApiProperty()
-  owner: string;
+  createdAt: Date;
 
+  @ApiProperty()
+  updatedAt: Date;
+
+  // TODO: 最新のjobの実行時間とstatusをどうするか
   constructor(data: Partial<BatchEntity>) {
     Object.assign(this, data);
   }

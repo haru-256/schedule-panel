@@ -2,38 +2,45 @@ import { Injectable } from '@nestjs/common';
 import { CreateBatchDto } from './dto/create-batch.dto';
 import { UpdateBatchDto } from './dto/update-batch.dto';
 import { BatchEntity } from './entities/batch.entity';
-
-let batches: BatchEntity[] = [];
+import { PrismaService } from '../prisma/prisma.service';
+import { generateBatchId } from 'src/lib/random-string';
 
 @Injectable()
 export class BatchService {
-  create(createBatchDto: CreateBatchDto): BatchEntity {
-    const batch = new BatchEntity(createBatchDto);
-    batches.push(batch);
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createBatchDto: CreateBatchDto): Promise<BatchEntity> {
+    const id = generateBatchId(createBatchDto.name);
+    const batch = await this.prisma.batch.create({
+      data: { id, ...createBatchDto },
+    });
+    return new BatchEntity(batch);
+  }
+
+  async findAll(): Promise<BatchEntity[]> {
+    const batches = await this.prisma.batch.findMany();
+    return batches.map((batch) => new BatchEntity(batch));
+  }
+
+  async findOne(id: string): Promise<BatchEntity> {
+    const batch = await this.prisma.batch.findUnique({ where: { id } });
+    return new BatchEntity(batch);
+  }
+
+  async update(
+    id: string,
+    updateBatchDto: UpdateBatchDto,
+  ): Promise<BatchEntity> {
+    let batch = await this.findOne(id);
+    batch = await this.prisma.batch.update({
+      where: { id },
+      data: { ...batch, ...updateBatchDto },
+    });
     return batch;
   }
 
-  findAll(): BatchEntity[] {
-    return batches;
-  }
-
-  findOne(id: string): BatchEntity {
-    const batch = batches.find((Batch) => Batch.id === id);
-    return batch;
-  }
-
-  update(id: string, updateBatchDto: UpdateBatchDto) {
-    let batch = this.findOne(id);
-    batch = new BatchEntity({ ...batch, ...updateBatchDto });
-    this.remove(id);
-    batches.push(batch);
-
-    return batch;
-  }
-
-  remove(id: string): BatchEntity {
-    const removedBatch = this.findOne(id);
-    batches = batches.filter((Batch) => Batch.id !== removedBatch.id);
-    return removedBatch;
+  async remove(id: string): Promise<BatchEntity> {
+    const batch = await this.prisma.batch.delete({ where: { id } });
+    return new BatchEntity(batch);
   }
 }

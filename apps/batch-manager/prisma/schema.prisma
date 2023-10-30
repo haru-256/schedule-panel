@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Batch {
+  id          String   @id
+  name        String
+  imageUrl    String
+  machineType String
+  owner       String
+  scheduledAt String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  jobHistory Job[]
+}
+
+model Job {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  batchId String
+  batch   Batch  @relation(fields: [batchId], references: [id])
+}

@@ -21,19 +21,19 @@ export class BatchController {
 
   @Post()
   @ApiCreatedResponse({ type: BatchEntity })
-  create(@Body() createBatchDto: CreateBatchDto): BatchEntity {
+  create(@Body() createBatchDto: CreateBatchDto): Promise<BatchEntity> {
     return this.batchService.create(createBatchDto);
   }
 
   @Get()
   @ApiOkResponse({ type: BatchEntity, isArray: true })
-  findAll(): BatchEntity[] {
+  findAll(): Promise<BatchEntity[]> {
     return this.batchService.findAll();
   }
 
   @Get(':id')
   @ApiOkResponse({ type: BatchEntity })
-  findOne(@Param('id') id: string): BatchEntity {
+  findOne(@Param('id') id: string): Promise<BatchEntity> {
     const Batch = this.batchService.findOne(id);
     if (!Batch) {
       throw new NotFoundException(`Batch with id ${id} does not exist.`);
@@ -46,13 +46,13 @@ export class BatchController {
   update(
     @Param('id') id: string,
     @Body() updateBatchDto: UpdateBatchDto,
-  ): BatchEntity {
+  ): Promise<BatchEntity> {
     return this.batchService.update(id, updateBatchDto);
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: BatchEntity })
-  remove(@Param('id') id: string): BatchEntity {
+  remove(@Param('id') id: string): Promise<BatchEntity> {
     return this.batchService.remove(id);
   }
 }
