@@ -45,6 +45,13 @@ resource "google_compute_subnetwork" "batch_us_central1" {
   network                  = google_compute_network.batch.id
   private_ip_google_access = true
 }
+resource "google_compute_subnetwork" "batch_asia_east1" {
+  name                     = "batch"
+  ip_cidr_range            = "192.168.1.0/24"
+  region                   = "asia-east1"
+  network                  = google_compute_network.batch.id
+  private_ip_google_access = true
+}
 resource "google_compute_router" "batch" {
   name    = "batch"
   project = var.gcp_project_id

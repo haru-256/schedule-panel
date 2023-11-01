@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { generateJobId } from 'src/lib/random-string';
+import { generateJobId } from 'src/utils/random-string';
 import { BatchService } from 'src/batch/batch.service';
 import { JobEntity } from './entities/job.entity';
 

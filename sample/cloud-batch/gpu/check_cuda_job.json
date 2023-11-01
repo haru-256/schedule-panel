@@ -1,0 +1,56 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "displayName": "check-cuda",
+            "container": {
+              "imageUri": "us-central1-docker.pkg.dev/haru256-schedule-panel/batch/sample-batch-gpu",
+              "entrypoint": "/bin/bash",
+              "commands": ["-c", "nvidia-smi && nvcc --version"]
+            }
+          }
+        ],
+        "computeResource": {
+          "cpuMilli": 1000,
+          "memoryMib": 1000
+        }
+      },
+      "taskCount": 1,
+      "parallelism": 1
+    }
+  ],
+  "allocationPolicy": {
+    "location": {
+      "allowedLocations": ["regions/asia-east1"]
+    },
+    "instances": [
+      {
+        "installGpuDrivers": true,
+        "policy": {
+          "machineType": "n1-standard-2",
+          "accelerators": [
+            {
+              "type": "nvidia-tesla-t4",
+              "count": 1
+            }
+          ],
+          "provisioningModel": "STANDARD"
+        }
+      }
+    ],
+    "network": {
+      "networkInterfaces": [
+        {
+          "network": "projects/haru256-schedule-panel/global/networks/batch",
+          "subnetwork": "projects/haru256-schedule-panel/regions/asia-east1/subnetworks/batch",
+          "noExternalIpAddress": true
+        }
+      ]
+    }
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}

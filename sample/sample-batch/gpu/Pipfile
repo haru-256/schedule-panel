@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[[source]]
+url = "https://download.pytorch.org/whl/cu118"
+verify_ssl = true
+name = "pytorch"
+
+[packages]
+numpy = "==1.26.1"
+nbconvert = "==7.9.2"
+ipykernel = "==6.26.0"
+torch = {version = "==2.1.0", index = "pytorch"}
+
+[dev-packages]
+black = "*"
+ruff = "*"
+mypy = "*"
+
+[requires]
+python_version = "3.11"

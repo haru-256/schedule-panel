@@ -3,7 +3,7 @@ import { CreateBatchDto } from './dto/create-batch.dto';
 import { UpdateBatchDto } from './dto/update-batch.dto';
 import { BatchEntity } from './entities/batch.entity';
 import { PrismaService } from '../prisma/prisma.service';
-import { generateBatchId } from 'src/lib/random-string';
+import { generateBatchId } from 'src/utils/random-string';
 
 @Injectable()
 export class BatchService {
