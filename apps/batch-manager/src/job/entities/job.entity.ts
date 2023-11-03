@@ -6,9 +6,12 @@ export class JobEntity implements Job {
   @ApiProperty()
   id: string;
 
+  @ApiProperty()
+  name: string;
+
   // TODO: statusのgetterを作る。内部でCloud Batchに問い合わせる
-  // @ApiProperty()
-  // status: string;
+  @ApiProperty()
+  status: string;
 
   @ApiProperty()
   createdAt: Date;

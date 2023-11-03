@@ -15,12 +15,16 @@ CREATE TABLE "Batch" (
 -- CreateTable
 CREATE TABLE "Job" (
     "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "batchId" TEXT NOT NULL,
 
     CONSTRAINT "Job_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Job_name_key" ON "Job"("name");
 
 -- AddForeignKey
 ALTER TABLE "Job" ADD CONSTRAINT "Job_batchId_fkey" FOREIGN KEY ("batchId") REFERENCES "Batch"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

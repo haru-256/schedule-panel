@@ -46,6 +46,7 @@ async function main() {
     update: {},
     create: {
       id: job1Id,
+      name: job1Id,
       batchId: batch1Id,
     },
   });
@@ -54,6 +55,7 @@ async function main() {
     update: {},
     create: {
       id: job2Id,
+      name: job2Id,
       batchId: batch2Id,
     },
   });

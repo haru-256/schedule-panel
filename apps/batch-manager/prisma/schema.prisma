@@ -25,8 +25,10 @@ model Batch {
 
 model Job {
   id        String   @id
+  name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  // statusの管理はせず、Cloud Batchに問い合わせる
 
   batchId String
   batch   Batch  @relation(fields: [batchId], references: [id])
