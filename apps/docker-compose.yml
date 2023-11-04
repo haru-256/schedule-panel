@@ -1,6 +1,32 @@
 version: "3.8"
 
 services:
+  batch-manager:
+    build:
+      context: ./batch-manager
+      dockerfile: Dockerfile
+    image: batch-manager:latest
+    container_name: batch-manager
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/schedule-panel
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
+    volumes:
+      - $HOME/.config/gcloud/application_default_credentials.json:/app/credentials.json:ro
+    hostname: batch-manager
+    healthcheck:
+      test: "curl -f http://localhost:3000/health || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - schedule-panel
+
   postgres:
     image: postgres:16.0-alpine
     container_name: postgres
@@ -17,6 +43,14 @@ services:
     hostname: postgres
     restart: always
     user: root
+    healthcheck:
+      test: "pg_isready -U user -d schedule-panel"
+      interval: 10s
+      timeout: 30s
+      retries: 10
+      start_period: 30s
+    networks:
+      - schedule-panel
 
   pgadmin:
     image: dpage/pgadmin4:7.8
@@ -31,7 +65,13 @@ services:
     depends_on:
       - postgres
     user: root
+    networks:
+      - schedule-panel
 
 volumes:
   pgdata:
   pgadmin:
+
+networks:
+  schedule-panel:
+    driver: bridge

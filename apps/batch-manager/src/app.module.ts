@@ -6,9 +6,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { JobModule } from './job/job.module';
 import { CloudBatchService } from './cloud-batch/cloud-batch.service';
 import { CloudBatchModule } from './cloud-batch/cloud-batch.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
-  imports: [BatchModule, PrismaModule, JobModule, CloudBatchModule],
+  imports: [BatchModule, PrismaModule, JobModule, CloudBatchModule, HealthModule],
   controllers: [AppController],
   providers: [AppService, CloudBatchService],
 })

@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Add ValidationPipe to validate request parameters
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   // Add ExceptionFilter to handle PrismaClientException
   // https://docs.nestjs.com/exception-filters#inheritance
   const { httpAdapter } = app.get(HttpAdapterHost);

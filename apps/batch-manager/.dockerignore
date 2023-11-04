@@ -1,0 +1,12 @@
+test/
+.eslintrc.js
+.gitginore
+.nvmrc
+.prettierrc
+README.md
+Makefile
+Dockerfile
+docker-compose.yml
+**/node_modules/
+**/.git
+**/dist/

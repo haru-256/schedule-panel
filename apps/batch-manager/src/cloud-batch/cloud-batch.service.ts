@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BatchEntity } from 'src/batch/entities/batch.entity';
 import { BatchServiceClient, protos as _cloudBatch } from '@google-cloud/batch';
-const cloudBatch = _cloudBatch.google.cloud.batch.v1;
+export const cloudBatch = _cloudBatch.google.cloud.batch.v1;
 
 @Injectable()
 export class CloudBatchService {
@@ -73,7 +73,7 @@ export class CloudBatchService {
     return job;
   }
 
-  async listJobs(
+  async historyJobs(
     batchId: string,
   ): Promise<_cloudBatch.google.cloud.batch.v1.IJob[]> {
     // parameters
@@ -85,6 +85,24 @@ export class CloudBatchService {
       parent: `projects/${project}/locations/${region}`,
       filter: `uid:${batchId}`,
       // pageSize: 1,
+    });
+    const res = await batchClient.listJobs(request);
+    const jobs = res[0];
+    return jobs;
+  }
+
+  async listJobsByIds(
+    jobIds: string[],
+  ): Promise<_cloudBatch.google.cloud.batch.v1.IJob[]> {
+    // parameters
+    const project = 'haru256-schedule-panel';
+    const region = 'us-central1';
+
+    const batchClient = new BatchServiceClient({});
+    const filter = jobIds.map((id) => `uid:${id}`).join(' OR ');
+    const request = new cloudBatch.ListJobsRequest({
+      parent: `projects/${project}/locations/${region}`,
+      filter,
     });
     const res = await batchClient.listJobs(request);
     const jobs = res[0];
